@@ -5,5 +5,8 @@ python:
 os:
     - linux
 
+install:
+    - sudo apt-get update
+
 script: 
     - bash ci_scripts/test_full_setup.sh
