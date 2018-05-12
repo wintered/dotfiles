@@ -175,7 +175,7 @@ def main():
         "--dryrun",
         help="Only print commands to execute, do not install anything.",
         action="store_true",
-        default=True
+        default=False
     )
 
     uninstall_parser = subparsers.add_parser(
@@ -190,7 +190,7 @@ def main():
         "--dryrun",
         help="Only print commands to execute, do not uninstall anything.",
         action="store_true",
-        default=True
+        default=False
     )
 
     # If no arguments given, do "uninstall all"

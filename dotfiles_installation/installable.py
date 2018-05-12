@@ -22,7 +22,7 @@ def color_red(text):
 
 
 def log_info(text, dryrun):
-    if dryrun:
+    if not dryrun:
         logging.info(color_cyan(text))
 
 
