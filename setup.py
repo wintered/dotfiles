@@ -27,7 +27,7 @@ INSTALLABLES = (
              "install", "sur5r-keyring", "-y", "--force-yes"),
             ("sudo", "apt-get", "update"),
         ),
-        apt_packages=("i3", "i3wm"),
+        apt_packages=("i3", "i3-wm"),
         configuration_installation=(
             (path_join(DOTFILES_HOME, "i3", "config"),
              path_join(I3_HOME, "config")),
