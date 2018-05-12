@@ -168,7 +168,9 @@ def main():
     # If no arguments given, do "install all"
     install_parser.set_defaults(
         action=lambda dryrun: list(progress(
-            installable.install(dryrun) for installable in INSTALLABLES
+            (installable.install(dryrun) for installable in INSTALLABLES),
+            total=len(INSTALLABLES),
+            dryrun=dryrun
         )),
     )
     install_parser.add_argument(
@@ -196,7 +198,9 @@ def main():
     # If no arguments given, do "uninstall all"
     uninstall_parser.set_defaults(
         action=lambda dryrun: list(progress(
-            installable.uninstall(dryrun) for installable in INSTALLABLES
+            (installable.uninstall(dryrun) for installable in INSTALLABLES),
+            total=len(INSTALLABLES),
+            dryrun=dryrun
         )),
     )
 
@@ -209,7 +213,9 @@ def main():
     )
     full_install_parser.set_defaults(
         action=lambda dryrun: list(progress(
-            installable.install(dryrun) for installable in INSTALLABLES
+            (installable.install(dryrun) for installable in INSTALLABLES),
+            total=len(INSTALLABLES),
+            dryrun=dryrun
         )),
     )
 
@@ -219,7 +225,9 @@ def main():
     )
     full_uninstall_parser.set_defaults(
         action=lambda dryrun: list(progress(
-            installable.uninstall(dryrun) for installable in INSTALLABLES
+            (installable.uninstall(dryrun) for installable in INSTALLABLES),
+            total=len(INSTALLABLES),
+            dryrun=dryrun
         )),
     )
 
