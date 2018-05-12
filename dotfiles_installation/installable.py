@@ -40,7 +40,7 @@ def execute_command(command, dryrun):
         print(command_str)
     else:
         try:
-            check_call(command, shell=True)
+            check_call(command_str, shell=True)
         except CalledProcessError as e:
             log_error(
                 "ERROR -- Command failed: '{}'\n"
