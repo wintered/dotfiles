@@ -1,8 +1,13 @@
-from tqdm import tqdm
+try:
+    from tqdm import tqdm
+except ImportError:
+    TQDM_INSTALLED = False
+else:
+    TQDM_INSTALLED = True
 
 
 def progress(installables, total, dryrun):
-    if dryrun:
-        return installables
-    else:
+    if not dryrun and TQDM_INSTALLED:
         return tqdm(installables, total=total)
+    else:
+        return installables
