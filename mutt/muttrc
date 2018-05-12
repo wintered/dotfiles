@@ -1,0 +1,120 @@
+
+
+#  Mail-Adress Shortcuts {{{ # 
+
+#  }}} Mail-Adress Shortcuts # 
+
+
+#  Bindings and Macros {{{ # 
+
+# Source muttrc
+macro index S ":source ~/.muttrc\n" "Reload muttrc"
+macro pager S ":source ~/.muttrc\n" "Reload muttrc"
+
+# add sender to adress book
+macro index a     "|abook --add-email\n" 'add sender to abook'
+macro pager a     "|abook --add-email\n" 'add sender to abook'
+
+# reload yahoo inbox
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.google<enter><change-folder>!<enter>'
+
+# navigation like vim
+bind pager j next-line
+bind pager k previous-line
+
+bind pager <return>  next-undeleted
+bind pager <backspace>  previous-undeleted
+
+# open links
+macro index \cb   "|urlview\n"
+macro pager \cb   "|urlview\n"
+
+# go to yahoo folders
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index S <change-folder>=[Gmail]/Gesendet<enter>
+
+#  }}} Bindings and Macros # 
+
+
+#  Editor specifics {{{ # 
+set abort_nosubject=yes
+
+set editor ='vim -c "set spell spelllang=de,en" -c "set tw=72" -c "set filetype=mail"'
+
+unset edit_headers
+
+#  }}} Editor specifics # 
+
+
+#  General Configurations {{{ # 
+
+set mail_check = 60
+set timeout = 15
+
+set collapse_unread=no
+
+set beep_new
+set delete=yes
+set sort=threads
+set sort_aux = last-date-received
+set strict_threads
+
+set index_format="%4C %Z %[!%Y-%m-%d %H:%M] %-17.17F %s"
+set pager_format="%S [%C/%T] %n (%l) %s"
+set status_format="%v: %f (%s) [%M/%m] [N=%n,*=%t,new=%b]"
+set mailcap_path="~/.mutt/mailcap"
+set mailcap_sanitize=yes
+
+#  }}} General Configurations # 
+
+
+#  Cache + Certificates {{{ # 
+
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = "~/.mutt/cache/certificates"
+
+#  }}} Cache + Certificates # 
+
+
+#  Colors {{{ # 
+
+color normal black default 
+color quoted red default
+color quoted1 yellow default
+color quoted2 green default
+color quoted3 cyan default
+color quoted4 blue default
+color quoted5 magenta default
+color quoted6 red default
+color quoted7 yellow default
+color signature brightred default
+color indicator white blue
+color error brightred black
+color status green white
+color tree brightred default    # the thread tree in the index menu
+color tilde brightmagenta default
+color message brightcyan default
+color markers brightcyan default
+color attachment brightmagenta default
+color search brightblue default    # how to hilite search patterns in the pager
+#
+color header brightred black ^(From|Subject):
+color body brightmagenta default "(ftp|http)://[^ ]+"   # point out URLs
+color body brightmagenta default [-a-z_0-9.]+@[-a-z_0-9.]+      # e-mail addresses
+color underline brightgreen default
+color index white default ~D
+color index brightred default ~N
+color index brightred default ~O
+
+set markers=no
+
+#  }}} Colors # 
+
+
+#  Mail-Accounts {{{ # 
+
+folder-hook 'googlemail.com' 'source ~/.mutt/account.google'
+source ~/.mutt/account.google
+
+#  }}} Mail-Accounts # 
