@@ -1,175 +1,237 @@
 #!/usr/bin/python3
 # -*- coding: iso-8859-15 -*-
 import argparse
-import logging
 from glob import glob
-from subprocess import check_call
+import logging
 import os
-from os import makedirs
-from os.path import abspath, dirname, expanduser, expandvars, join as path_join
-from shutil import copy
+from os.path import dirname, expanduser, join as path_join
 
+from dotfiles_installation.installable import Installable, get_filename
+from dotfiles_installation.progressbar import progress
 
-DOTFILES_PATH = path_join(dirname(abspath(__file__)))
+DOTFILES_HOME = path_join(dirname(__file__))
+HOME_DIRECTORY = expanduser("~")
+XDG_CONFIG = path_join(HOME_DIRECTORY, ".config")
 
+I3_HOME = path_join(HOME_DIRECTORY, ".i3")
+VIM_HOME = path_join(HOME_DIRECTORY, ".vim")
+ZSH_HOME = path_join(HOME_DIRECTORY, ".zsh")
 
-def filename(path):
-    *_, name = os.path.split(path)
-    return name
+INSTALLABLES = (
+    Installable(
+        name="i3wm",
+        pre_commands=(
+            ("echo 'deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe' | sudo tee -a /tmp/t.txt"),
+            ("sudo", "apt-get", "update"),
+            ("sudo", "apt-get", "--allow-unauthenticated",
+             "install", "sur5r-keyring", "-y", "--force-yes"),
+            ("sudo", "apt-get", "update"),
+        ),
+        apt_packages=("i3", "i3wm"),
+        configuration_installation=(
+            (path_join(DOTFILES_HOME, "i3/config"),
+             path_join(I3_HOME, "config")),
+            (path_join(DOTFILES_HOME, "i3/i3status.conf"),
+             path_join(I3_HOME, "i3status.conf")),
+            (path_join(DOTFILES_HOME, "i3/i3_layout_start.sh"),
+             path_join(HOME_DIRECTORY, "i3_layout_start.sh")),
+        )
+    ),
+    Installable(
+        name="vim",
+        apt_packages=("vim-gnome",),
+        configuration_installation=(
+            (path_join(DOTFILES_HOME, "vim/vimrc"),
+             path_join(HOME_DIRECTORY, ".vimrc")),
+        ),
+        git_clones={
+            "https://github.com/VundleVim/Vundle.vim.git": path_join(VIM_HOME, "bundle/Vundle.vim")},
+    ),
+    Installable(name="cmake", apt_packages=("build-essential", "cmake",)),
+    Installable(name="git", apt_packages=("git",)),
+    Installable(
+        name="zsh",
+        apt_packages=("zsh",),
+        configuration_installation=tuple(
+            (configuration_path,
+             path_join(ZSH_HOME, get_filename(configuration_path)))
+            for configuration_path
+            in glob("{}/*.zsh".format(path_join(DOTFILES_HOME, "zsh")))
+        ),
+        post_commands=(
+            ("sudo", "usermod", "-s", "/bin/zsh", os.getenv("USER")),
+            # XXX: antigen installation?
+        )
+    ),
+    Installable(
+        name="mutt",
+        apt_packages=("mutt", "msmtp", "gpgsm"),
+        configuration_installation=(
+            (path_join(DOTFILES_HOME, "mutt/muttrc"),
+             path_join(HOME_DIRECTORY, ".muttrc")),
+            (path_join(DOTFILES_HOME, "mutt/account.google"),
+             path_join(HOME_DIRECTORY, ".mutt/account.google")),
 
-
-def apt_install(package_name, extra_args=("-y", "--force-yes")):
-    check_call(("sudo", "apt-get", "install", package_name, *extra_args))
-
-
-def _expand(path):
-    return expandvars(expanduser(path))
-
-
-def setup_archive_tools():
-    apt_install("unrar")
-    apt_install("unzip")
-
-
-def setup_zathura(home_directory=_expand("~")):
-    logging.info("Installing zathura pdf viewer..")
-    apt_install("zathura")
-
-    zathura_home = path_join(home_directory, ".config", "zathura")
-    try:
-        makedirs(zathura_home)
-    except FileExistsError:
-        pass
-
-    zathurarc_path = path_join(DOTFILES_PATH, "zathura", "zathurarc")
-    zathurarc_target = path_join(zathura_home, "zathurarc")
-    logging.info("Copying zathurarc to '{}'".format(zathurarc_target))
-    copy(zathurarc_path, zathurarc_target)
-
-
-def setup_git():
-    apt_install("git")
-
-
-def setup_svn():
-    apt_install("subversion")
-
-
-def setup_silversearcher_ag():
-    apt_install("silversearcher-ag")
-
-
-def setup_scrot():
-    apt_install("scrot")
-
-
-def setup_sxiv():
-    apt_install("sxiv")
-
-
-def setup_latex():
-    raise NotImplementedError
-
-
-def setup_anki():
-    raise NotImplementedError
-
-
-def setup_python(home_directory=_expand("~")):
-    raise NotImplementedError
-
-
-def setup_i3wm(home_directory=_expand("~")):
-    raise NotImplementedError
-
-
-def setup_xstart_and_keymap():
-    raise NotImplementedError
-
-
-def setup_mutt():
-    raise NotImplementedError
-
-
-def setup_cmake():
-    apt_install("build-essential")
-    apt_install("cmake")
-
-
-def setup_zsh(home_directory=_expand("~")):
-    apt_install("zsh")
-    zsh_home = path_join(home_directory, ".zsh")
-    try:
-        makedirs(zsh_home)
-    except FileExistsError:
-        pass
-
-    zsh_directory = path_join(DOTFILES_PATH, "zsh")
-
-    zshrc_path = path_join(zsh_directory, "zshrc")
-    zshrc_target = path_join(home_directory, ".zshrc")
-    logging.info("Copying zshrc to '{}'".format(zshrc_target))
-    copy(zshrc_path, zshrc_target)
-
-    for zsh_filepath in glob("{}/*.zsh".format(zsh_directory)):
-        zsh_filename = filename(zsh_filepath)
-        file_target = path_join(zsh_home, zsh_filename)
-        logging.info("Copying '{}' to '{}'.".format(zsh_filename, file_target))
-        copy(zsh_filepath, file_target)
-
-    # XXX: Install antigen?
-
-    logging.info("Installing zsh as default shell.")
-    check_call(("sudo", "usermod", "-s", "/bin/zsh", os.getenv("USER")))
-
-    logging.info("Installing fortune cookies.")
-    apt_install("fortunes")
-    apt_install("fortune-mod")
-
-
-def setup_vim(home_directory=_expand("~")):
-    apt_install("vim-gnome")
-    vim_home = path_join(home_directory, ".vim")
-    try:
-        makedirs(vim_home)
-    except FileExistsError:
-        pass
-    vimrc_path = path_join(DOTFILES_PATH, "vim", "vimrc")
-    vimrc_target = path_join(home_directory, ".vimrc")
-    logging.info("Copying vimrc to '{}'".format(vimrc_target))
-    copy(vimrc_path, vimrc_target)
-    logging.debug("Done.")
-
-    bundle_home = path_join(vim_home, "bundle")
-    logging.debug("Installing vundle to '{}'".format(bundle_home))
-    try:
-        makedirs(bundle_home)
-    except FileExistsError:
-        pass
-    logging.debug("Cloning vundle..")
-    check_call(("git", "clone", "https://github.com/VundleVim/Vundle.vim.git", bundle_home))
-    logging.debug("Done.")
-
-    logging.info("Installing vim plugins with Vundle.")
-    check_call(("vim", "-c", "PluginInstall"))
-    logging.debug("Done.")
-    logging.info("Vim installed.")
-
-
-def setup():
-    raise NotImplementedError()
+        ),
+    ),
+    Installable(
+        name="archive_tools",
+        apt_packages=("unrar", "unzip"),
+    ),
+    Installable(
+        name="zathura",
+        apt_packages=("zathura",),
+        configuration_installation=(
+            (path_join(DOTFILES_HOME, "zathura/zathurarc"),
+             path_join(XDG_CONFIG, "zathura/zathurarc")),
+        ),
+    ),
+    Installable(name="svn", apt_packages=("subversion",)),
+    Installable(name="silversearcher-ag", apt_packages=("silversearcher-ag",)),
+    Installable(name="scrot", apt_packages=("scrot",)),
+    Installable(name="sxiv", apt_packages=("sxiv",)),
+    Installable(name="anki", apt_packages=("anki",)),
+    Installable(
+        name="latex",
+        apt_packages=(
+            "texlive",
+            "texlive-lang-german",
+            "texlive-latex-extra",
+            "texlive-latex-base",
+            "texlive-luatex",
+            "texlive-xetex",
+            "texlive-latex-recommended",
+            "texlive-science",
+            "texlive-pstricks",
+            "texlive-lang-english",
+            "texlive-extra-utils",
+            "texlive-fonts-extra",
+            "texlive-fonts-recommended",
+            "texlive-fonts-utils"
+            "dvipng"  # for anki
+        )
+    ),
+    Installable(
+        name="python",
+        apt_packages=(
+            "flake8",
+            "python-dev", "python3-dev",
+            "python-pip", "python3-pip",
+            "bpython", "bpython3"
+        ),
+        configuration_installation=(
+            (path_join(DOTFILES_HOME, "bpython/config"),
+             path_join(XDG_CONFIG, "bpython/config")),
+            (path_join(DOTFILES_HOME, "bpython/foo.theme"),
+             path_join(XDG_CONFIG, "bpython/foo.theme")),
+        ),
+        post_commands=(
+            ("sudo", "pip", "install", "--upgrade", "pip"),
+            ("sudo", "pip", "install", "numpy"),
+            ("sudo", "pip", "install", "scipy"),
+            ("sudo", "pip", "install", "sklearn"),
+            ("sudo", "pip", "install", "sympy"),
+            ("sudo", "pip3", "install", "--upgrade", "pip"),
+            ("sudo", "pip3", "install", "numpy"),
+            ("sudo", "pip3", "install", "scipy"),
+            ("sudo", "pip3", "install", "sklearn"),
+            ("sudo", "pip3", "install", "sympy"),
+        )
+    ),
+)
 
 
 def main():
+    # XXX: Change config for logging such that it does not say "INFO:ROOT"
+    # for info output
+    logging.basicConfig(level=2, format="%(message)s")
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers()
-    full_parser = subparsers.add_parser("full")
-    full_parser.set_defaults(fun=lambda args: setup("full", args=args))
 
-    # TODO: Add additional modes of installation
+    subparsers = parser.add_subparsers()
+    install_parser = subparsers.add_parser(
+        "install",
+        help="Install tools and packages.\n"
+             "No additional argument defaults to `full`, "
+             "which installs *all* packages and tools. "
+             "To install only individual targets do `setup.py install TARGET`, "
+             "see also `setup.py install --help` for a list of available targets."
+    )
+    # If no arguments given, do "install all"
+    install_parser.set_defaults(
+        action=lambda dryrun: list(progress(
+            installable.install(dryrun) for installable in INSTALLABLES
+        )),
+    )
+    install_parser.add_argument(
+        "--dryrun",
+        help="Only print commands to execute, do not install anything.",
+        action="store_true",
+        default=True
+    )
+
+    uninstall_parser = subparsers.add_parser(
+        "uninstall",
+        help="Uninstall tools and packages.\n"
+             "No additional argument defaults to `full`, "
+             "which uninstalls *all* packages and tools. "
+             "To uninstall only individual targets do `setup.py uninstall TARGET`, "
+             "see also `setup.py uninstall --help` for a list of available targets."
+    )
+    uninstall_parser.add_argument(
+        "--dryrun",
+        help="Only print commands to execute, do not uninstall anything.",
+        action="store_true",
+        default=True
+    )
+
+    # If no arguments given, do "uninstall all"
+    uninstall_parser.set_defaults(
+        action=lambda dryrun: list(progress(
+            installable.uninstall(dryrun) for installable in INSTALLABLES
+        )),
+    )
+
+    install_subparsers = install_parser.add_subparsers()
+    uninstall_subparsers = uninstall_parser.add_subparsers()
+
+    # Install all.
+    full_install_parser = install_subparsers.add_parser(
+        "full", help="Install all supported and listed tools and packages."
+    )
+    full_install_parser.set_defaults(
+        action=lambda dryrun: list(progress(
+            installable.install(dryrun) for installable in INSTALLABLES
+        )),
+    )
+
+    # Uninstall all.
+    full_uninstall_parser = uninstall_subparsers.add_parser(
+        "full", help="Uninstall all supported and listed tools and packages."
+    )
+    full_uninstall_parser.set_defaults(
+        action=lambda dryrun: list(progress(
+            installable.uninstall(dryrun) for installable in INSTALLABLES
+        )),
+    )
+
+    # Install/Uninstall individual packages.
+    for installable in sorted(INSTALLABLES, key=lambda installable: installable.name):
+        installable_install_parser = install_subparsers.add_parser(
+            installable.name, help=installable.description
+        )
+        installable_install_parser.set_defaults(action=installable.install)
+
+        uninstallable_uninstall_parser = uninstall_subparsers.add_parser(
+            installable.name, help=installable.description
+        )
+        uninstallable_uninstall_parser.set_defaults(action=installable.uninstall)
 
     args = parser.parse_args()
-    args.fun(args)
+
+    try:
+        args.action(args.dryrun)
+    except AttributeError:
+        parser.print_help()
 
 
 if __name__ == "__main__":

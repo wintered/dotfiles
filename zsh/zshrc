@@ -1,41 +1,30 @@
-fpath=($HOME/.zsh/custom_completions $fpath)
+fpath=(~/.zsh/custom_completions $fpath)
 # Set up the prompt
-
-# make less maintain colors
-export LESS='-R'
-
 
 export DOTFILES_REPOSITORY_PATH="$HOME/dotfiles"
 
-source "$HOME/.zsh/prompt.zsh"
+source ~/.zsh/prompt.zsh
 
 setopt histignorealldups sharehistory
 
-bindkey -v 
+bindkey -e
 bindkey '^R' history-incremental-search-backward
 
-source "$HOME/.zsh/globals.zsh"
-source "$HOME/.zsh/exports.zsh"
-source "$HOME/.zsh/completions.zsh"
-source "$HOME/.zsh/os.zsh"
+source ~/.zsh/globals.zsh
+source ~/.zsh/exports.zsh
+source ~/.zsh/completions.zsh
+source ~/.zsh/os.zsh
 
-
-#source ~/antigen.zsh
-#antigen bundle b4b4r07/zsh-vimode-visual
-source "$HOME/.zsh/aliases.zsh"
-
-# Added for mf, remove if you are someone else
-source "$HOME/.zsh/aliases_mf.zsh"
-
-source "$HOME/.zsh/functions.zsh"
-
-# Added for mf, remove if you are someone else
-source "$HOME/.zsh/functions_mf.zsh"
+source ~/.zsh/aliases.zsh
+source ~/.zsh/functions.zsh
 
 small_fortune
 
-python3 "$DOTFILES_REPOSITORY_PATH/speed_up_keyboard/speed_up_keyboard/keyboard_increase.py"
-source "$HOME/.zsh/keyboard_speed.zsh"
+python ~/speed_up_keyboard/keyboard_increase.py
+source ~/.zsh/keyboard_speed.zsh
+#source ~/update_dotfiles.sh &> /dev/null
+
+eval `opam config env`
 
 function preexec() {
     python "$DOTFILES_REPOSITORY_PATH/has_alias/has_alias.py" "$1"
@@ -46,6 +35,11 @@ export XDG_CONFIG_HOME="$HOME/.config/"
 # export PATH="$HOME/.pyenv/bin:$PATH"
 # eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
-fpath=($HOME/.zsh/custom_completions $fpath)
+fpath=(~/.zsh/custom_completions $fpath)
 
 export TF_CPP_MIN_LOG_LEVEL=2
+
+# daily_kata
+
+
+# source /opt/ros/kinetic/setup.zsh

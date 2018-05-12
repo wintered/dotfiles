@@ -15,6 +15,10 @@ set tabpagemax=100
 
 set colorcolumn=80 " draw a red column indicating where 80 chars end
 
+" in git commits, color column should be shorter to indicate end of 
+" commit message line.
+autocmd BufRead,BufNewFile *COMMIT_EDITMSG :set colorcolumn=51 
+
 " Set to auto read when a file is changed from the outside
 set autoread
 
@@ -179,8 +183,11 @@ au BufRead,BufNewFile *.chpl :set filetype=chpl
 
 autocmd BufRead,BufNewFile :set makeprg=make -j
 autocmd BufRead,BufNewFile *.py :set makeprg=$DOTFILES_REPOSITORY_PATH/vim/pick_python.sh\ %
+autocmd BufRead,BufNewFile *.R :set makeprg=Rscript\ %
 
 autocmd BufRead,BufNewFile *.java :set makeprg=javac\ %
+
+
 
 " }}} Customized behavior of vim's 'make'prg "
 
@@ -236,6 +243,15 @@ Plugin 'nvie/vim-flake8'
 
 " Auto-Pairs Plugin () [] {} (and many more)
 Plugin 'jiangmiao/auto-pairs'
+
+" Javascript syntax and intendation
+Plugin 'pangloss/vim-javascript'
+let g:javascript_plugin_jsdoc = 1
+
+" Reacht JSX syntax and intendation
+Plugin 'mxw/vim-jsx'
+let g:jsx_ext_required = 0
+
 "
 "Rainbow Parentheses
 Plugin 'kien/rainbow_parentheses.vim'
@@ -405,7 +421,6 @@ augroup Folding
     autocmd BufRead,BufNewFile ~/.i3/config :setlocal foldmethod=marker
     autocmd BufRead,BufNewFile ~/.i3/i3status.conf :setlocal foldmethod=marker
     autocmd BufRead,BufNewFile ~/.muttrc :setlocal foldmethod=marker
-    autocmd BufRead,BufNewFile *.py :setlocal foldmethod=marker
 augroup END
 
 " }}} Folding "
@@ -442,6 +457,18 @@ set statusline+=%*
 " }}}
 
 
+" Snippetize Visual Selection {{{ "
+function! Snippetize(...)
+    " XXX: Yank text in range
+    " XXX: Open snippetfile in new tab
+    " XXX: Append to end of snippetfile text "snippet"
+    " XXX: Append to end of snippetfile the text in the range
+    " XXX: Append to end of snippetfile text "endsnippet"
+endfunction
+
+" }}} Snippetize Visual Selection "
+
+
 " Delete trailing whitespace (python) {{{ "
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
@@ -454,6 +481,7 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 
 " }}} Delete trailing whitespace (python) "
+
 
 " :GitOpen - Open files in current git repository by regex and autocompletion {{{ "
 function! GitFiles(ArgLead, CmdLine, CursorPos)
@@ -469,7 +497,7 @@ function! GitFiles(ArgLead, CmdLine, CursorPos)
 python3 << EOF
 import vim
 from re import search, compile as re_compile
-from os.path import join as path_join
+from os.path import join as path_join, basename
 pattern = re_compile(vim.eval("gitfiles_pattern"))
 gitfiles = vim.eval("gitfiles_all_files")
 root = vim.eval("gitfiles_project_root").strip("\n")
@@ -481,7 +509,7 @@ sorted_matches = sorted(
     matching_files, 
     key=lambda filename: ("docs/" in filename, 
                           "tests/" in filename, 
-                          len(filename))
+                          len(basename(filename)))
 )
 
 completions = [
