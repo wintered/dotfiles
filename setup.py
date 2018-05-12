@@ -46,6 +46,9 @@ INSTALLABLES = (
         ),
         git_clones={
             "https://github.com/VundleVim/Vundle.vim.git": path_join(VIM_HOME, "bundle", "Vundle.vim")},
+        post_commands=(
+            ("vim", "-c", "PluginInstall"),
+        )
     ),
     Installable(name="cmake", apt_packages=("build-essential", "cmake",)),
     Installable(name="git", apt_packages=("git",)),
