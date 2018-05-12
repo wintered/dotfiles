@@ -29,11 +29,11 @@ INSTALLABLES = (
         ),
         apt_packages=("i3", "i3wm"),
         configuration_installation=(
-            (path_join(DOTFILES_HOME, "i3/config"),
+            (path_join(DOTFILES_HOME, "i3", "config"),
              path_join(I3_HOME, "config")),
-            (path_join(DOTFILES_HOME, "i3/i3status.conf"),
+            (path_join(DOTFILES_HOME, "i3", "i3status.conf"),
              path_join(I3_HOME, "i3status.conf")),
-            (path_join(DOTFILES_HOME, "i3/i3_layout_start.sh"),
+            (path_join(DOTFILES_HOME, "i3", "i3_layout_start.sh"),
              path_join(HOME_DIRECTORY, "i3_layout_start.sh")),
         )
     ),
@@ -41,11 +41,11 @@ INSTALLABLES = (
         name="vim",
         apt_packages=("vim-gnome",),
         configuration_installation=(
-            (path_join(DOTFILES_HOME, "vim/vimrc"),
+            (path_join(DOTFILES_HOME, "vim", "vimrc"),
              path_join(HOME_DIRECTORY, ".vimrc")),
         ),
         git_clones={
-            "https://github.com/VundleVim/Vundle.vim.git": path_join(VIM_HOME, "bundle/Vundle.vim")},
+            "https://github.com/VundleVim/Vundle.vim.git": path_join(VIM_HOME, "bundle", "Vundle.vim")},
     ),
     Installable(name="cmake", apt_packages=("build-essential", "cmake",)),
     Installable(name="git", apt_packages=("git",)),
@@ -67,10 +67,10 @@ INSTALLABLES = (
         name="mutt",
         apt_packages=("mutt", "msmtp", "gpgsm"),
         configuration_installation=(
-            (path_join(DOTFILES_HOME, "mutt/muttrc"),
+            (path_join(DOTFILES_HOME, "mutt", "muttrc"),
              path_join(HOME_DIRECTORY, ".muttrc")),
-            (path_join(DOTFILES_HOME, "mutt/account.google"),
-             path_join(HOME_DIRECTORY, ".mutt/account.google")),
+            (path_join(DOTFILES_HOME, "mutt", "account.google"),
+             path_join(HOME_DIRECTORY, ".mutt", "account.google")),
 
         ),
     ),
@@ -82,8 +82,8 @@ INSTALLABLES = (
         name="zathura",
         apt_packages=("zathura",),
         configuration_installation=(
-            (path_join(DOTFILES_HOME, "zathura/zathurarc"),
-             path_join(XDG_CONFIG, "zathura/zathurarc")),
+            (path_join(DOTFILES_HOME, "zathura", "zathurarc"),
+             path_join(XDG_CONFIG, "zathura", "zathurarc")),
         ),
     ),
     Installable(name="svn", apt_packages=("subversion",)),
@@ -120,10 +120,10 @@ INSTALLABLES = (
             "bpython", "bpython3"
         ),
         configuration_installation=(
-            (path_join(DOTFILES_HOME, "bpython/config"),
-             path_join(XDG_CONFIG, "bpython/config")),
-            (path_join(DOTFILES_HOME, "bpython/foo.theme"),
-             path_join(XDG_CONFIG, "bpython/foo.theme")),
+            (path_join(DOTFILES_HOME, "bpython", "config"),
+             path_join(XDG_CONFIG, "bpython", "config")),
+            (path_join(DOTFILES_HOME, "bpython", "foo.theme"),
+             path_join(XDG_CONFIG, "bpython", "foo.theme")),
         ),
         post_commands=(
             ("sudo", "pip", "install", "--upgrade", "pip"),
