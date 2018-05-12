@@ -1,0 +1,9 @@
+language: python
+python:
+    - "3.5"
+
+os:
+    - linux
+
+script: 
+    - bash ci_scripts/test_full_setup.sh
