@@ -1,5 +1,5 @@
 #!/bin/sh
-OUTPUT_FILENAME = "/tmp/setup_output.txt" 
+OUTPUT_FILENAME="/tmp/setup_output.txt" 
 python3 ../setup.py install &> "$OUTPUT_FILENAME"
 if grep "ERROR" "$OUTPUT_FILENAME"; then
     exit 1
