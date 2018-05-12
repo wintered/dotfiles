@@ -145,7 +145,16 @@ def main():
     # XXX: Change config for logging such that it does not say "INFO:ROOT"
     # for info output
     logging.basicConfig(level=2, format="%(message)s")
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="This script installs/uninstalls dotfiles and required packages "
+                    "automatically. It supports installation of individual "
+                    "targets as well as a complete installation of "
+                    "all available choices. "
+                    "If this is too much magic for you, you can always use "
+                    "setup.py install --dryrun PACKAGE"
+                    "and only installation instructions are printed to "
+                    "the screen, without any actual action being taken."
+    )
 
     subparsers = parser.add_subparsers()
     install_parser = subparsers.add_parser(
