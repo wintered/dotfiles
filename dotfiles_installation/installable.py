@@ -5,9 +5,6 @@ import shutil
 from subprocess import check_call, CalledProcessError
 from shutil import copy
 
-# XXX: Use logging everywhere (logging.debug for detailed info,
-# logging.info with colored output for progress.)
-
 
 def color_cyan(text):
     cyan = '\033[0;36m'
@@ -36,11 +33,16 @@ def execute_command(command, dryrun):
     else:
         command_str = " ".join(command)
 
+    logging.debug("{} command: '{}'".format(
+        "Dryrunning" if dryrun else "Executing", command_str
+    ))
+
     if dryrun:
         print(command_str)
     else:
         try:
             check_call(command_str, shell=True)
+            logging.debug("Command '{}' executed without error.".format(command_str))
         except CalledProcessError as e:
             log_error(
                 "ERROR -- Command failed: '{}'\n"
@@ -49,11 +51,16 @@ def execute_command(command, dryrun):
 
 
 def get_filename(path):
+    logging.debug("Determining file name for path: '{}'".format(path))
     *_, filename = path_split(path)
+    logging.debug("File name is: {}".format(filename))
     return filename
 
 
 def apt_install(package, dryrun):
+    logging.debug("{} package '{}' using apt.".format(
+        "Dryrunning installation of" if dryrun else "Installing", package
+    ))
     execute_command(
         ("sudo", "apt-get", "install", package, "-y", "--force-yes"),
         dryrun
@@ -61,6 +68,9 @@ def apt_install(package, dryrun):
 
 
 def apt_uninstall(package, dryrun):
+    logging.debug("{} package '{}' using apt.".format(
+        "Dryrunning purge of" if dryrun else "Purging", package
+    ))
     execute_command(
         ("sudo", "apt-get", "purge", package, "-y", "--force-yes"),
         dryrun
@@ -69,12 +79,28 @@ def apt_uninstall(package, dryrun):
 
 def git_clone(url, target_location, dryrun):
     if dryrun:
+        logging.debug("Dryrun directory creation for git clone target.")
+        logging.debug("Git clone target directory is: '{}'".format(
+            dirname(target_location))
+        )
         print("mkdirs", "-p", dirname(target_location))
     else:
         try:
+            logging.debug("Attemption to create target directory for git clone.")
+            logging.debug("Git clone target directory is: '{}'".format(
+                dirname(target_location))
+            )
             makedirs(dirname(target_location))
         except FileExistsError:
+            logging.debug("Directory already exists.")
             pass
+    logging.debug(
+        "{} from url '{}' to local target location '{}'".format(
+            "Dryrunning 'git clone'" if dryrun else "Git-cloning",
+            url,
+            target_location
+        )
+    )
     execute_command(("git", "clone", url, target_location), dryrun)
 
 
@@ -104,13 +130,20 @@ class Installable(object):
     def install(self, dryrun):
         log_info("Installing {}...".format(self.name), dryrun)
 
+        logging.debug("Processing pre-commands:")
         for command in self.pre_commands:
             execute_command(command, dryrun)
 
+        logging.debug("Processing apt installations:")
         for package in self.apt_packages:
             apt_install(package, dryrun=dryrun)
 
+        logging.debug("Installing configurations files:")
         for configuration_location, configuration_target in self.configuration_installation:
+            logging.debug(
+                "Installing configuration file from path '{}' to "
+                "target path '{}'".format(configuration_location, configuration_target)
+            )
             if dryrun:
                 print("mkdir", "-p", dirname(configuration_target))
             else:
@@ -124,9 +157,11 @@ class Installable(object):
             else:
                 copy(configuration_location, configuration_target)
 
+        logging.debug("Processing git commands:")
         for repository_url, target_location in self.git_clones.items():
             git_clone(repository_url, target_location=target_location, dryrun=dryrun)
 
+        logging.debug("Processing post-commands:")
         for command in self.post_commands:
             execute_command(command, dryrun)
 
@@ -134,19 +169,32 @@ class Installable(object):
 
     def uninstall(self, dryrun):
         log_info("Uninstalling {}...".format(self.name), dryrun)
+
+        logging.debug("Processing apt uninstallations:")
         for package in self.apt_packages:
             apt_uninstall(package, dryrun=dryrun)
 
+        logging.debug("Removing configuration files:")
         for _, configuration_target in self.configuration_installation:
+            logging.debug(
+                "Removing configuration file at location '{}'.".format(
+                    configuration_target
+                )
+            )
             if dryrun:
                 print("rm", configuration_target)
             else:
                 remove(configuration_target)
 
+        logging.debug("Removing cloned git repositories..")
         for _, target_location in self.git_clones.items():
             if dryrun:
+                logging.debug("Dryrunning removal of git repository at '{}'.".format(
+                    target_location)
+                )
                 print("rm", "-rf", target_location)
             else:
+                logging.debug("Removing git repository at '{}'.".format(target_location))
                 shutil.rmtree(target_location, ignore_errors=True)
 
         log_info("Done.", dryrun)

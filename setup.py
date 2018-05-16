@@ -145,8 +145,6 @@ INSTALLABLES = (
 
 
 def main():
-    # XXX: Change config for logging such that it does not say "INFO:ROOT"
-    # for info output
     logging.basicConfig(level=2, format="%(message)s")
     parser = argparse.ArgumentParser(
         description="This script installs/uninstalls dotfiles and required packages "
@@ -168,7 +166,7 @@ def main():
              "To install only individual targets do `setup.py install TARGET`, "
              "see also `setup.py install --help` for a list of available targets."
     )
-    # If no arguments given, do "install all"
+    # If no arguments given to "install", do "install all"
     install_parser.set_defaults(
         action=lambda dryrun: list(progress(
             (installable.install(dryrun) for installable in INSTALLABLES),
@@ -198,7 +196,7 @@ def main():
         default=False
     )
 
-    # If no arguments given, do "uninstall all"
+    # If no arguments given to "uninstall", do "uninstall all"
     uninstall_parser.set_defaults(
         action=lambda dryrun: list(progress(
             (installable.uninstall(dryrun) for installable in INSTALLABLES),
