@@ -23,8 +23,6 @@ INSTALLABLES = (
         pre_commands=(
             ("echo 'deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe' | sudo tee -a /tmp/t.txt"),
             ("sudo", "apt-get", "update"),
-            ("sudo", "apt-get", "--allow-unauthenticated",
-             "install", "sur5r-keyring", "-y", "--force-yes"),
             ("sudo", "apt-get", "update"),
         ),
         apt_packages=("i3", "i3-wm"),
