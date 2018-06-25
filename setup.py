@@ -110,8 +110,8 @@ INSTALLABLES = (
             "texlive-extra-utils",
             "texlive-fonts-extra",
             "texlive-fonts-recommended",
-            "texlive-fonts-utils"
-            "dvipng"  # for anki
+            "texlive-fonts-utils",
+            "dvipng",  # for anki
         )
     ),
     Installable(
