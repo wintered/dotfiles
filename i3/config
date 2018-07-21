@@ -16,6 +16,8 @@ bindsym $mod+d exec dmenu_run
 # start anki (memory card system)
 bindsym $mod+a --release exec anki
 
+# put workrave in normal (active) mode
+bindsym $mod+w exec "~/workrave_dbus/workrave_cmi.sh start"
 
 #  }}} Opening programs # 
 
@@ -23,6 +25,13 @@ bindsym $mod+a --release exec anki
 
 # kill focused window
 bindsym $mod+BackSpace kill
+
+# stop current hamster-time-tracker activity
+bindsym $mod+t exec "hamster_stop"
+
+# put workrave in suspended (inactive) mode
+bindsym $mod+s exec "~/workrave_dbus/workrave_cmi.sh stop"
+
 
 #  }}} Kill programs # 
 
@@ -145,26 +154,28 @@ bindsym $mod+minus scratchpad show
 
 # switch to workspace
 # Default workspaces 4-6
-bindsym $mod+7 workspace 4
-bindsym $mod+8 workspace 5
-bindsym $mod+9 workspace 6
-# Other used workspaces
-bindsym $mod+3 workspace 7
-bindsym $mod+4 workspace 8
-bindsym $mod+5 workspace 9
-bindsym $mod+0 workspace 10
-# basically disabled these
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+10 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+7 move container to workspace 4
-bindsym $mod+Shift+8 move container to workspace 5
-bindsym $mod+Shift+9 move container to workspace 6
-bindsym $mod+Shift+3 move container to workspace 7
-bindsym $mod+Shift+4 move container to workspace 8
-bindsym $mod+Shift+5 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+10 move container to workspace 10
 
 #  }}} Workspaces / Move window to workspaces # 
 
@@ -202,9 +213,9 @@ bindsym --release Control+Print exec "python ~/code_reviewer/build_code_review.p
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status -c ~/.i3/i3status.conf
-        tray_output eDP1
-        font pango:monospace 14
+        status_command "i3blocks -c ~/.i3/i3blocks.conf"
+        # status_command i3status -c ~/.i3/i3status.conf
+        font pango:monospace, FontAwesome 14
 }
 
 #  }}} i3 bar # 
@@ -213,28 +224,22 @@ bar {
 #  Window Assignments     ---------------------------------------------- {{{ # 
 
 ############################################
-# Workspace 5: COMMUNICATION (Mail, Skype) #
-############################################
-# Assign mutt windows to workspace 5 (communication)
-assign [title="^mutt mail$"] 5
-# Assign skype windows to workspace 5 (communication)
-assign [class="Skype"] 5
-
-
-############################################
-# Workspace 6: Work (Terminal + Firefox)   #
-############################################
-# Open anki on workspace 6 by default
-assign [class="Anki"] 6
-
-############################################
 # Things that start on scratchpad          #
 ############################################
 for_window [class="Workrave"] move window to scratchpad
-
 
 #  }}} Window Assignments # 
 
 
 # Run this fine script, that handles the startup specifics!
 exec "$HOME/i3_layout_start.sh"
+exec "/usr/bin/volumeicon"
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+# Screen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
