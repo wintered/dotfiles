@@ -13,3 +13,7 @@
     type = cat-file -t
     dump = cat-file -p
     update = "!git pull && git submodule update --init --recursive"
+    add-upstream=remote add upstream
+    remote-url=remote -v
+    count-commits=rev-list --count HEAD
+    
