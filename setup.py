@@ -132,6 +132,11 @@ INSTALLABLES = (
             ("sudo", "pip", "install", "scipy"),
             ("sudo", "pip", "install", "sklearn"),
             ("sudo", "pip", "install", "sympy"),
+            ("sudo", "pip3", "install", "--upgrade", "pip3"),
+            ("sudo", "pip3", "install", "numpy"),
+            ("sudo", "pip3", "install", "scipy"),
+            ("sudo", "pip3", "install", "sklearn"),
+            ("sudo", "pip3", "install", "sympy"),
         )
     ),
 )
