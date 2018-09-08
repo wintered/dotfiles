@@ -52,13 +52,13 @@ INSTALLABLES = (
     Installable(name="git", apt_packages=("git",)),
     Installable(
         name="zsh",
-        apt_packages=("zsh",),
+        apt_packages=("zsh", "fortune", "fortunes", "fortunes-de"),
         configuration_installation=tuple(
             (configuration_path,
              path_join(ZSH_HOME, get_filename(configuration_path)))
             for configuration_path
             in glob("{}/*.zsh".format(path_join(DOTFILES_HOME, "zsh")))
-        ),
+        ) + ((path_join(DOTFILES_HOME, "zsh", "zshrc"), path_join(HOME_DIRECTORY, ".zshrc")),),
         post_commands=(
             ("sudo", "usermod", "-s", "/bin/zsh", os.getenv("USER")),
             # XXX: antigen installation?

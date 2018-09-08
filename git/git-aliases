@@ -16,4 +16,3 @@
     add-upstream=remote add upstream
     remote-url=remote -v
     count-commits=rev-list --count HEAD
-    
