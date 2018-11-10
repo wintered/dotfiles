@@ -1,0 +1,6 @@
+---
+- name: anki
+apt: 
+    name: ["anki", "dvipng"]
+    state: present
+sudo: yes

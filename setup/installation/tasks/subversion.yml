@@ -1,0 +1,5 @@
+---
+- name: subversion
+  apt: name="svn" update_cache="yes" state="present"
+  sudo: yes
+
