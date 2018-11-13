@@ -4,8 +4,9 @@
   become: yes
 
 - name: i3wm configuration
+  copy: src="{{ playbook_dir }}/../../vim/vimrc" dest="~/.vimrc"
   copy: src={{ item.src }} dest={{ item.dest }}
   with_items:
-    - "{ src: '{{ playbook_dir }}/../../i3/config' dest: '~/i3/config' }"
-    - "{ src: '{{ playbook_dir }}/../../i3/i3status.conf' dest: '~/i3/i3status.conf' }"
-    - "{ src: '{{ playbook_dir }}/../../i3/i3_layout_start.sh' dest: '~/i3/i3_layout_start.sh' }"
+    - { src: '{{ playbook_dir }}/../../i3/config' dest: '~/i3/config' }
+    - { src: '{{ playbook_dir }}/../../i3/i3status.conf' dest: '~/i3/i3status.conf' }
+    - { src: '{{ playbook_dir }}/../../i3/i3_layout_start.sh' dest: '~/i3/i3_layout_start.sh' }
