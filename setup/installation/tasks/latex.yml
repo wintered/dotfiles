@@ -5,7 +5,8 @@
              "texlive-latex-base", "texlive-luatex", "texlive-xetex",
              "texlive-science", "texlive-pstricks", "texlive-lang-english",
              "texlive-extra-utils", "texlive-fonts-extra", 
-             "texlive-fonts-recommended", "texlive-fonts-utils"]
+             "texlive-fonts-recommended"]
 
       update_cache: yes
       state: present
+  become: yes

@@ -1,6 +1,5 @@
 - hosts: localhost
-    tasks:
-
+  tasks:
       - include: tasks/anki.yml
         tags: [ "never", "anki", "Anki" ]
 
@@ -23,7 +22,7 @@
         tags: [ "mutt", "mail", "email" ]
 
       - include: tasks/scrot.yml
-        tags: [ "scrott", "requires-x", "x-server", "gui" ]
+        tags: [ "scrot", "requires-x", "x-server", "gui" ]
 
       - include: tasks/silversearcher-ag.yml
         tags: [ "ag", "silversearcher-ag", "minimal" ]

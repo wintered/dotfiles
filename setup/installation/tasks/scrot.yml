@@ -1,5 +1,5 @@
 ---
 - name: scrot
   apt: name="scrot" state="present" update_cache="yes"
-  sudo: yes
+  become: yes
 

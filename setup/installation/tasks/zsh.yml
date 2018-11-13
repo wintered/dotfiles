@@ -1,14 +1,14 @@
 ---
 - name: zsh
   apt: name="zsh" update_cache="yes" state="present"
-  sudo: yes
+  become: yes
 
 - name: fortune-cookies
   apt: 
     name: ["fortune", "fortunes", "fortunes-de"]
     update_cache: "yes"
     state: "present"
-  sudo: yes
+  become: yes
   tags: ["fortune-cookies", "fortune", "fortunes"]
 
 - name: zsh configuration

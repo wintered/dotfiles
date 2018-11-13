@@ -1,4 +1,7 @@
 ---
 - name: cmake
-  apt: name:"cmake" state=present update_cache=yes
-  sudo: yes
+  apt: 
+    name: "cmake"
+    state: present 
+    update_cache: yes
+  become: yes

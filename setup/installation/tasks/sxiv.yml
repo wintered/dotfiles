@@ -1,6 +1,6 @@
 ---
 - name: sxiv
   apt: name="sxiv" state="present" update_cache="yes"
-  sudo: yes
+  become: yes
   
 

@@ -1,6 +1,8 @@
 ---
+
 - name: anki
-apt: 
+  apt: 
     name: ["anki", "dvipng"]
-    state: present
-sudo: yes
+    state: present 
+    update_cache: yes
+  become: yes
