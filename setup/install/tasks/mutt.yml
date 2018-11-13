@@ -9,7 +9,7 @@
 - name: mutt configuration
   copy: src={{ item.src }} dest={{ item.dest }}
   with_items:
-      - "{ src: '{{ playbook_dir }}/../../mutt/muttrc'
-           dest: '~/.muttrc' }"
-      - "{ src: '{{ playbook_dir }}/../../mutt/account.google'
-           dest: '~/.mutt/account.google' }"
+      - { src: '{{ playbook_dir }}/../../mutt/muttrc',
+          dest: '~/.muttrc' }
+      - { src: '{{ playbook_dir }}/../../mutt/account.google',
+          dest: '~/.mutt/account.google' }
