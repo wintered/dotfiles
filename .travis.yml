@@ -12,8 +12,6 @@ os:
 
 install:
     - sudo pip install ansible
-    - sudo pip install -r requirements.txt
-    - sudo apt-get update
 
 script: 
     - sudo bash ci_scripts/test_full_setup.sh
