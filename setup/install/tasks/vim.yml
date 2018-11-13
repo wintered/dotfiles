@@ -7,10 +7,17 @@
   become: yes
 
 - name: vimrc
-  copy: src="{{ playbook_dir }}/../../vim/vimrc" dest="~/.vimrc"
+  copy: src="{{ playbook_dir }}/../../vim/vimrc" dest="/home/{{ user }}/.vimrc"
+
+- name: configuration directory
+  file: 
+    path: "/home/{{ user }}/.vim"
+    state: directory
+    mode: 0755
+    owner: "{{ user }}"
 
 - name: vundle
-  git: repo=https://github.com/gmarik/Vundle.vim.git dest="~/.vim/bundle/Vundle.vim"
+  git: repo=https://github.com/gmarik/Vundle.vim.git dest="/home/{{ user }}/.vim/bundle/Vundle.vim"
 
 - name: vundle plugins
   shell: vim +PluginInstall +qall
@@ -26,4 +33,4 @@
 - name: YouCompleteMe
   shell: python install.py
   args:
-    chdir: ~/.vim/bundle/YouCompleteMe
+    chdir: "/home/{{ user }}/.vim/bundle/YouCompleteMe"
