@@ -7,11 +7,11 @@
   become: yes
 
 - name: vimrc
-  file:
-      path: "~/.vimrc"
-      state: absent
+  file: 
+    path: "/home/{{ user }}/.vimrc"
+    state: absent
 
-- name: dot-vim directory
-  file:
-      path: "~/.vim"
-      state: absent
+- name: configuration directory
+  file: 
+    path: "/home/{{ user }}/.vim"
+    state: absent

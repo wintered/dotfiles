@@ -4,6 +4,12 @@
   become: yes
 
 - name: zathura configuration
-  file:
-      path: "{{ lookup('env', 'XDG_CONFIG_HOME')}}/zathura/zathurarc"
-      state: absent 
+  file: 
+    path: "/home/{{ user }}/.config/zathura/zathurarc"
+    state: absent
+
+- name: configuration directory
+  file: 
+    path: "/home/{{ user }}/.config/zathura"
+    state: absent
+

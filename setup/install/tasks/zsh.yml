@@ -12,10 +12,10 @@
   tags: ["fortune-cookies", "fortune", "fortunes"]
 
 - name: zsh configuration
-  copy: src="{{ playbook_dir }}../../zsh" dest=~/.zsh
+  copy: src="{{ playbook_dir }}../../zsh" dest=/home/{{ user }}/.zsh
 
 - name: zshrc
-  move: src=~/.zsh/zshrc dest=~/.zshrc
+  move: src=/home/{{ user }}/.zsh/zshrc dest=/home/{{ user }}/.zshrc
 
 - name: zsh default shell
   command: usermod -s "/bin/zsh" "{{ user }}"
