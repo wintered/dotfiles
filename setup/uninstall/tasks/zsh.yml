@@ -1,0 +1,27 @@
+---
+- name: reset bash as default shell
+  command: usermod -s "/bin/bash" "{{ user }}"
+
+- name: zsh
+  apt: name="zsh" update_cache="yes" state="absent"
+  become: yes
+
+- name: fortune-cookies
+  apt: 
+    name: ["fortune", "fortunes", "fortunes-de"]
+    update_cache: "yes"
+    state: absent
+  become: yes
+  tags: ["fortune-cookies", "fortune", "fortunes"]
+
+- name: zsh configuration
+  file:
+      path: "~/.zsh"
+      state: absent
+
+  copy: src="{{ playbook_dir }}../../zsh" dest=~/.zsh
+
+- name: zshrc
+  file:
+      path: "~/.zshrc"
+      state: absent

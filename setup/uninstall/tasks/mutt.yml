@@ -1,0 +1,17 @@
+---
+- name: mutt
+  apt:
+      name: ["mutt", "msmtp", "gpgsm"]
+      update_cache: yes
+      state: absent
+  become: yes
+
+- name: mutt configuration
+  file:
+      path: "{{ item.dest }}"
+      state: absent
+  with_items:
+      - "{ src: '{{ playbook_dir }}/../../mutt/muttrc'
+           dest: '~/.muttrc' }"
+      - "{ src: '{{ playbook_dir }}/../../mutt/account.google'
+           dest: '~/.mutt/account.google' }"

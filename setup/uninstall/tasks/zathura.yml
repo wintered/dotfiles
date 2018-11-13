@@ -1,0 +1,9 @@
+---
+- name: zathura
+  apt: name="zathura" update_cache="yes" state="absent"
+  become: yes
+
+- name: zathura configuration
+  file:
+      path: "{{ lookup('env', 'XDG_CONFIG_HOME')}}/zathura/zathurarc"
+      state: absent 

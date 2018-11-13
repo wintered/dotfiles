@@ -1,0 +1,17 @@
+---
+- name: vim
+  apt: 
+    name: ["vim-gnome", "git-core", "python3"]
+    state: absent 
+    update_cache: yes
+  become: yes
+
+- name: vimrc
+  file:
+      path: "~/.vimrc"
+      state: absent
+
+- name: dot-vim directory
+  file:
+      path: "~/.vim"
+      state: absent
