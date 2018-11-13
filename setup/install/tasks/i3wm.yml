@@ -3,8 +3,14 @@
   apt: name="i3-wm" state=present update_cache=yes
   become: yes
 
+- name: configuration directory
+  file: 
+    path: ~/i3
+    state: directory
+    mode: 0755
+    owner: "{{ user }}"
+
 - name: i3wm configuration
-  copy: src="{{ playbook_dir }}/../../vim/vimrc" dest="~/.vimrc"
   copy: src={{ item.src }} dest={{ item.dest }}
   with_items:
     - { src: '{{ playbook_dir }}/../../i3/config', dest: '~/i3/config' }
