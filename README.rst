@@ -18,7 +18,14 @@ Installation
 Installation of tools is done using `ansible 
 <http://www.ansible.com/>`_.
 
-An installation of all popular targets can be done using:
+First, we need to install `ansible` which we can do easily using `pip`:
+
+.. code-block:: bash
+
+    pip install ansible
+
+An installation of all most commonly used targets can then be done using:
+
 .. code-block:: bash
 
     ansible-playbook -i dotfiles_installation/localhost_inventory.yml dotfiles_installation/install/install.yml
