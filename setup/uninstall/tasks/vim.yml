@@ -1,7 +1,7 @@
 ---
 - name: vim
   apt: 
-    name: ["vim-gnome", "git-core", "python3"]
+    name: ["vim-gnome"]
     state: absent 
     update_cache: yes
   become: yes
