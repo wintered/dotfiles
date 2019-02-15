@@ -6,5 +6,5 @@ TODO List
   - vim [x] 
 
   - zsh [x] 
-
-  - add ansible pipeline (aspell, stylecheck etc.) []
+ 
+  - add ansible pipeline (aspell, stylecheck etc.) [ ]
