@@ -108,6 +108,24 @@ alias lsfind="python3 $DOTFILES_REPOSITORY_PATH/lsfind/lsfind.py"
 
 alias binacluster="ssh fr_mn119@login01.binac.uni-tuebingen.de"                 
 
+# Perform spell and style checks {{{
+
+alias sp="aspell --lang=en check"
+alias spell="aspell --lang=en check"
+
+alias gsp="aspell --lang=de check"
+alias gspell="aspell --lang=de check"
+
+# Search for all tex files in subfolders of the current directory and spell check
+# all of them. Very useful for larger tex projects, as it force you to spell check 
+# every single file back-to-back.
+alias dspell='find . -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;'
+
+alias style="~/opt/style-check/style-check.rb"
+alias stylecheck="~/opt/style-check/style-check.rb"
+
+#  }}} Perform spell and style checks # 
+
 
 #  ROS {{{ # 
 alias setup_ros="zsh /opt/ros/kinetic/setup.zsh"

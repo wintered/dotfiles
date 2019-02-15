@@ -480,7 +480,28 @@ endfunc
 
 autocmd BufWrite *.py :call DeleteTrailingWS()
 
+
 " }}} Delete trailing whitespace (python) "
+
+
+" Perform spell and style checks {{{
+
+" Enable us-english spell check"
+ca s setlocal spell spelllang=en_us
+
+" German spell check"
+ca de setlocal spell spelllang=de 
+
+" Disable any spell check (useful to speed up scrolling in large documents)"
+ca n setlocal nospell
+
+" Enable english spell checks on opening texfiles"
+autocmd BufNewFile,BufRead *.tex setlocal spell spelllang=en_us
+
+" Detect phrases and bad words in the current document using spellcheck.rb"
+ca sty !~/opt/style-check/style-check.rb -v %
+
+" Perform spell and style checks }}}
 
 
 " :GitOpen - Open files in current git repository by regex and autocompletion {{{ "
