@@ -116,8 +116,8 @@ alias spell="aspell --lang=en check"
 alias gsp="aspell --lang=de check"
 alias gspell="aspell --lang=de check"
 
-# Search for all tex files in subfolders of the current directory and spell check
-# all of them. Very useful for larger tex projects, as it force you to spell check 
+# Search for all tex files in the current directory (recursively) and spell check
+# them. Very useful for larger tex projects, as it force you to spell check 
 # every single file back-to-back.
 alias dspell='find . -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;'
 
