@@ -1,0 +1,14 @@
+---
+- name: spell-style-check 
+  apt: 
+    name: ["aspell-en", "aspell-de", "ruby"]
+    state: present 
+    update_cache: yes
+  become: yes
+  
+- name: create opt directory 
+  shell: mkdir -p /home/{{ user }}/.local/opt  
+
+- name: style-check   
+  copy: src="{{ playbook_dir }}/../../style-check"  
+         dest="/home/{{ user }}/.local/opt/style-check"
