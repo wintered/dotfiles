@@ -5,7 +5,7 @@ jupyter_notebook() {
     mkdir -p $NOTEBOOKS_DIR
     ipynb_file="${NOTEBOOKS_DIR}/$(date --iso-8601=seconds).ipynb"
     cat $NOTEBOOKS_DIR/empty.ipynb > $ipynb_file
-    jupyter notebook $ipynb_file &S
+    jupyter notebook $ipynb_file &!
 }
 
 unroche(){
