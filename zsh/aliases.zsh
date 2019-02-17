@@ -121,8 +121,8 @@ alias gspell="aspell --lang=de check"
 # every single file back-to-back.
 alias dspell='find . -name "*.tex" -exec aspell --lang=en --mode=tex check "{}" \;'
 
-alias style="~/opt/style-check/style-check.rb"
-alias stylecheck="~/opt/style-check/style-check.rb"
+alias style="~/.local/opt/style-check/style-check.rb"
+alias stylecheck="~/.local/opt/style-check/style-check.rb"
 
 #  }}} Perform spell and style checks # 
 
