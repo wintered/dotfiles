@@ -15,3 +15,5 @@ fpath=(~/.zsh/custom_completions $fpath)
 export KEYTIMEOUT=1
 PYTHONPATH="~/pypy/pypy/goal/ ~/pypy/pypy/goal/pypy-c ~/pypy/pypy/goal/pypy/tool/build_cffi_imports"
 
+export NOTEBOOKS_DIR="/home/$(whoami)/.local/notebooks"
+

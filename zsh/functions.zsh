@@ -1,3 +1,13 @@
+# Open jupyter notebook, avoid the file browser window (we want to code, not 
+# browse the filesystem). Save the notebook with the current timestamp in 
+# iso-8601 format
+jupyter_notebook() {
+    mkdir -p $NOTEBOOKS_DIR
+    ipynb_file="${NOTEBOOKS_DIR}/$(date --iso-8601=seconds).ipynb"
+    cat $NOTEBOOKS_DIR/empty.ipynb > $ipynb_file
+    jupyter notebook $ipynb_file &S
+}
+
 unroche(){
     cat $1 | sed 's~controllerType=0 controllerNumber=1 scan=~~g'
 }

@@ -11,7 +11,7 @@ alias calc="/usr/lib/libreoffice/program/scalc"
 alias b="bpython"
 alias b3="bpython"
 
-alias jp="jupyter notebook &!"
+alias jp=jupyter_notebook
 
 #  }}} BPython # 
 
