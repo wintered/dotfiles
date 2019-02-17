@@ -1,0 +1,15 @@
+---
+- name: spell-style-check 
+  apt: 
+    name: ["aspell-en", "aspell-de", "ruby"]
+    update_cache: yes
+    state: absent 
+  become: yes
+  
+- name: create opt directory
+  shell: mkdir -p /home/{{ user }}/.local/opt  
+
+- name: style-check   
+  file: 
+    path: "/home/{{ user }}/.local/opt/style-check"
+    state: absent

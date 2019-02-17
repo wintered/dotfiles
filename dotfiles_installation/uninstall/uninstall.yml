@@ -27,6 +27,9 @@
       - include: tasks/silversearcher-ag.yml
         tags: [ "ag", "silversearcher-ag", "minimal" ]
 
+      - include: tasks/spell-style-check.yml
+        tags: ["spell-style-check"]
+
       - include: tasks/subversion.yml
         tags: [ "never", "subversion" ]
 
