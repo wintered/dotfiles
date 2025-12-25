@@ -1,0 +1,36 @@
+fpath=(~/.zsh/custom_completions $fpath)
+setopt histignorealldups sharehistory
+xrandr --output  eDP --mode 1440x900
+
+#. "$HOME/.cargo/env" 
+
+bindkey '^R' history-incremental-search-backward
+ 
+source ~/.zsh/globals.zsh 
+source ~/.zsh/exports.zsh 
+source ~/.zsh/completions.zsh 
+source ~/.zsh/os.zsh  
+
+# source ~/.zsh/functions.zsh
+source ~/.zsh/aliases.zsh
+
+#source ~/.ohmyzsh/oh-my-zsh.sh
+
+# shortcuts for private mappings, ssh servers etc   
+# source ~/.zsh/private.zsh 
+
+# vi mode
+bindkey -v 
+
+#export PATH=$PATH:/Users/wintered/.toolbox/bin
+
+# Set up rtx for runtime management
+#eval "$(rtx activate zsh)"
+
+PS1='%~: '
+
+# related to ruby
+export LDFLAGS="-L/opt/homebrew/opt/ruby@3.3/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/ruby@3.3/include"
+export PATH="/opt/homebrew/opt/ruby@3.3/bin:/Users/wintered/.gem/ruby/3.3.0/bin:$PATH"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/libxml2/lib/pkgconfig"

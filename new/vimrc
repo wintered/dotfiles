@@ -1,0 +1,112 @@
+setlocal spell spelllang=en_us
+set spell
+set nocompatible
+set number
+set bs=2
+set colorcolumn=80
+
+filetype off
+set noswapfile
+set rtp+=~/.vim/bundle/Vundle.vim
+
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'L9'
+Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+"Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'nvie/vim-flake8'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
+
+" Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-o>"
+let g:UltiSnipsJumpForwardTrigger="<c-f>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+" " If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+call vundle#end() 
+
+" You-Complete-Me options {{{ "
+let g:ycm_global_ycm_extra_conf="~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+let g:ycm_confirm_extra_conf=0
+let g:ycm_server_python_interpreter="/opt/homebrew/bin/python3.12"
+
+let g:ycm_autoclose_preview_window_after_completion = 1
+" }}} You-Complete-Me options "
+
+
+" With a map leader it's possible to do extra key combinations
+let mapleader = "."
+let g:mapleader = "."
+
+" Tabs {{{ "
+ca t tabedit
+
+" Useful noremappings for managing tabs
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+
+
+" Tab Navigation from left to right and vice versa    
+nnoremap H gT
+nnoremap L gt
+
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+" }}} Tabs "
+
+
+
+" Fast closing
+noremap <leader>q :wq!<ENTER>
+noremap <leader>a :q!<ENTER>
+noremap <leader>d :MerlinTypeOf<Enter>
+
+" Fast saving
+noremap <leader>w :w<ENTER>
+
+" Slow execution of make command    
+"ca m make! &> .log! 
+"ca make make!
+
+" Tabs/Intendation width {{{ "
+
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+
+" }}} Tabs/Intendation width "
+
+" Search/Replace in Vim: Customizations {{{ "
+
+" case insensitive search
+set ignorecase
+set smartcase
+" by default add /g to search/replace
+set gdefault 
+
+" }}} Search in Vim: Customizations "
+
+"Filetype autodetections (tex, custom filetypes) {{{ "
+
+" Autodetect filetype for .tex files to allow snippets and autocomplete
+autocmd BufRead,BufNewFile *.exe :set filetype=make
+"au BufRead,BufNewFile *.chpl :set filetype=chpl
+
+
+" }}} Filetype autodetections (tex, anki_vim) "
+
+filetype plugin indent on " Filetype auto-detection
+syntax on " Syntax highlighting
